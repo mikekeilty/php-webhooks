@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+pre_ifs=$IFS
+IFS=$'\n'
+
+phpfiles=$(git status --short | grep -E '^(A|M)' | awk '{ print $2 }' | grep -E '(\.php)$')
+
+for file in $phpfiles; do
+  if ! php -l "$file"; then
+    exit 1
+  fi
+done
